@@ -1,0 +1,3 @@
+[submodule "LibraryForGraal"]
+	path = LibraryForGraal
+	url = https://github.com/9139876/LibraryForGraal
