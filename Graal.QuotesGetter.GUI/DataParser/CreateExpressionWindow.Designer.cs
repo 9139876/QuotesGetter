@@ -1,6 +1,6 @@
 ﻿namespace Graal.QuotesGetter.GUI.DataParser
 {
-    partial class CreateExpression
+    partial class CreateExpressionWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -37,6 +37,7 @@
             // 
             // Cmb_ExpressionType
             // 
+            this.Cmb_ExpressionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Cmb_ExpressionType.FormattingEnabled = true;
             this.Cmb_ExpressionType.Location = new System.Drawing.Point(96, 12);
             this.Cmb_ExpressionType.Name = "Cmb_ExpressionType";
@@ -79,7 +80,7 @@
             this.Btn_Create.UseVisualStyleBackColor = true;
             this.Btn_Create.Click += new System.EventHandler(this.Btn_Create_Click);
             // 
-            // CreateExpression
+            // CreateExpressionWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -91,7 +92,7 @@
             this.Controls.Add(this.Cmb_ExpressionType);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "CreateExpression";
+            this.Name = "CreateExpressionWindow";
             this.Text = "Создание выражения";
             this.ResumeLayout(false);
             this.PerformLayout();

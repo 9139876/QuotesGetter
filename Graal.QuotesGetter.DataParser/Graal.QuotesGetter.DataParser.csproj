@@ -33,7 +33,10 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\LibraryForGraal\External\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\LibraryForGraal\External\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpressionsTree.cs" />
     <Compile Include="Expressions\ApplySeparator.cs" />
     <Compile Include="Expressions\GetRow.cs" />
     <Compile Include="Expressions\_ExpressionType.cs" />
@@ -56,12 +58,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Storage\QuotesPostgresSqlDriver.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibraryForGraal\Graal.Library.Common\Graal.Library.Common.csproj">
+      <Project>{75f3a362-0f1e-4809-a876-f23ad62dd8f2}</Project>
+      <Name>Graal.Library.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LibraryForGraal\Graal.Library.Storage.Common\Graal.Library.Storage.Common.csproj">
+      <Project>{74b25759-6b1c-4bb3-8682-5ca922327b80}</Project>
+      <Name>Graal.Library.Storage.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

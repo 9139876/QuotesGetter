@@ -40,9 +40,11 @@ namespace Graal.QuotesGetter.DataParser.Expressions
 
         #region static
 
-        public static Expression GetExpression(JObject serialize)
+        public static Expression GetExpression(string serialize)
         {
-            ExpressionType type = (ExpressionType)int.Parse(serialize.SelectToken(nameof(Type)).ToString());
+            var jObj = JObject.Parse(serialize);
+
+            ExpressionType type = (ExpressionType)int.Parse(jObj.SelectToken(nameof(Type)).ToString());
 
             Expression expression;
 
@@ -58,7 +60,7 @@ namespace Graal.QuotesGetter.DataParser.Expressions
                     throw new ArgumentException($"Неизвестный тип выражения - '{type}'");
             }
 
-            expression.Deserialize((JObject)serialize.SelectToken("Specification"));
+            expression.Deserialize((JObject)jObj.SelectToken("Specification"));
 
             return expression;
         }
@@ -76,12 +78,12 @@ namespace Graal.QuotesGetter.DataParser.Expressions
             }
         }
 
-        public static JObject SerializeExpression(Expression expression)
+        public static string SerializeExpression(Expression expression)
         {
             return new JObject(
                 new JProperty(nameof(Type), (int)expression.Type),
                 new JProperty("Specification", expression.Serialize())
-                );
+                ).ToString();
         }
 
         #endregion

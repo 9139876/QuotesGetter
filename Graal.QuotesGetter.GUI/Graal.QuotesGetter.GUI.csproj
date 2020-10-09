@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataParser\CreateExpression.cs">
+    <Compile Include="DataParser\CreateExpressionWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DataParser\CreateExpression.Designer.cs">
-      <DependentUpon>CreateExpression.cs</DependentUpon>
+    <Compile Include="DataParser\CreateExpressionWindow.Designer.cs">
+      <DependentUpon>CreateExpressionWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -60,8 +60,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="DataParser\CreateExpression.resx">
-      <DependentUpon>CreateExpression.cs</DependentUpon>
+    <EmbeddedResource Include="DataParser\CreateExpressionWindow.resx">
+      <DependentUpon>CreateExpressionWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -92,6 +92,10 @@
     <ProjectReference Include="..\Graal.QuotesGetter.DataParser\Graal.QuotesGetter.DataParser.csproj">
       <Project>{cdbd3960-985b-42c4-8e4b-af6ffe9db01a}</Project>
       <Name>Graal.QuotesGetter.DataParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LibraryForGraal\Graal.Library.Common\Graal.Library.Common.csproj">
+      <Project>{75f3a362-0f1e-4809-a876-f23ad62dd8f2}</Project>
+      <Name>Graal.Library.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

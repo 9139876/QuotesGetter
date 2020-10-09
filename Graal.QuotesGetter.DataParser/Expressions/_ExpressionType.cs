@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Graal.Library.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,9 @@ namespace Graal.QuotesGetter.DataParser.Expressions
 {
     public enum ExpressionType
     {
+        [Description("Применение разделителя")]
         applySeparator,
-        getRow,
-        executeDate
+        [Description("Получение столбца")]
+        getRow
     }
 }
