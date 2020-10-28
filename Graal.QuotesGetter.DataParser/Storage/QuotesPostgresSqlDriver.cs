@@ -43,16 +43,16 @@ namespace Graal.QuotesGetter.DataParser.Storage
             {
                 using (var cmd = (Npgsql.NpgsqlCommand)connection.CreateCommand())
                 {
-                    cmd.CommandText = $"INSERT INTO {SchemaName}.{Tbl_QuotesParserExpressions} " +
-                                $"select {citCode} citizenships, :cyr cyr, :lat lat, :popular popular from DUAL ";
+                    //cmd.CommandText = $"INSERT INTO {SchemaName}.{Tbl_QuotesParserExpressions} " +
+                    //            $"select {citCode} citizenships, :cyr cyr, :lat lat, :popular popular from DUAL ";
 
-                    cmd.BindByName = true;
-                    cmd.ArrayBindCount = expSerialize.Count;
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.Add(":cyr", OracleDbType.NVarchar2).Value = cyr;
-                    cmd.Parameters.Add(":lat", OracleDbType.NVarchar2).Value = lat;
-                    cmd.Parameters.Add(":popular", OracleDbType.Int32).Value = popular;
-                    cmd.ExecuteNonQuery();
+                    //cmd.BindByName = true;
+                    //cmd.ArrayBindCount = expSerialize.Count;
+                    //cmd.Parameters.Clear();
+                    //cmd.Parameters.Add(":cyr", OracleDbType.NVarchar2).Value = cyr;
+                    //cmd.Parameters.Add(":lat", OracleDbType.NVarchar2).Value = lat;
+                    //cmd.Parameters.Add(":popular", OracleDbType.Int32).Value = popular;
+                    //cmd.ExecuteNonQuery();
                 }
             }
         }

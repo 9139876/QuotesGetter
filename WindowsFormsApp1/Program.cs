@@ -1,12 +1,10 @@
-﻿using Graal.Library.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Graal.QuotesGetter.GUI
+namespace WindowsFormsApp1
 {
     static class Program
     {
@@ -18,7 +16,7 @@ namespace Graal.QuotesGetter.GUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new Form1());
         }
     }
 }

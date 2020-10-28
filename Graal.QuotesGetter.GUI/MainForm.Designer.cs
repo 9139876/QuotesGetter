@@ -1,6 +1,6 @@
 ﻿namespace Graal.QuotesGetter.GUI
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -59,6 +59,7 @@
             this.Controls.Add(this.listBox1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.CheckOnLoad);
             this.ResumeLayout(false);
 
         }
