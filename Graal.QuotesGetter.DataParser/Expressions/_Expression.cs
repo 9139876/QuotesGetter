@@ -10,29 +10,11 @@ namespace Graal.QuotesGetter.DataParser.Expressions
 {
     public abstract class Expression
     {
-        private string[] prevInput;
-
-        private string[] result;
-
         public abstract ExpressionType Type { get; }
 
         public abstract string Name { get; }
 
-        public string[] Calculate(string[] inputValue, Queue<Expression> expressions)
-        {
-            if (inputValue != prevInput)
-            {
-                prevInput = inputValue;
-                if (expressions.Count > 0)
-                    inputValue = expressions.Dequeue().Calculate(inputValue, expressions);
-
-                result = GetExpressionResult(inputValue) ?? throw new ArgumentException(string.Format(Resources.ExpressionNullArgumentError, Name));
-            }
-
-            return result;
-        }
-
-        protected abstract string[] GetExpressionResult(string[] source);
+        public abstract string Calculate(string inputValue);
 
         abstract protected JObject Serialize();
 
@@ -40,39 +22,37 @@ namespace Graal.QuotesGetter.DataParser.Expressions
 
         #region static
 
-        public static Expression GetExpression(string serialize)
+        public static Expression GetExpression(JObject serialize)
         {
-            var jObj = JObject.Parse(serialize);
-
-            ExpressionType type = (ExpressionType)int.Parse(jObj.SelectToken(nameof(Type)).ToString());
+            ExpressionType type = (ExpressionType)int.Parse(serialize.SelectToken(nameof(Type)).ToString());
 
             Expression expression;
 
             switch (type)
             {
-                case ExpressionType.applySeparator:
-                    expression = new ApplySeparator();
+                case ExpressionType.getRowValue:
+                    expression = new GetRowValue();
                     break;
-                case ExpressionType.getRow:
-                    expression = new GetRow();
+                case ExpressionType.constValue:
+                    expression = new ConstValue();
                     break;
                 default:
                     throw new ArgumentException($"Неизвестный тип выражения - '{type}'");
             }
 
-            expression.Deserialize((JObject)jObj.SelectToken("Specification"));
+            expression.Deserialize((JObject)serialize.SelectToken("Specification"));
 
             return expression;
         }
 
-        public static Expression GetExpression(ExpressionType type, object[] parameters)
+        public static Expression GetExpression(ExpressionType type, string[] parameters)
         {
             switch (type)
             {
-                case ExpressionType.applySeparator:
-                    return new ApplySeparator(parameters);
-                case ExpressionType.getRow:
-                    return new GetRow(parameters);
+                case ExpressionType.getRowValue:
+                    return new GetRowValue(parameters);
+                case ExpressionType.constValue:
+                    return new ConstValue(parameters);
                 default:
                     throw new ArgumentException($"Неизвестный тип выражения - '{type}'");
             }

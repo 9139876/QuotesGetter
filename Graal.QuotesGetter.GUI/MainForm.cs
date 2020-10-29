@@ -38,7 +38,7 @@ namespace Graal.QuotesGetter.GUI
         private void CheckOnLoad(object sender, EventArgs e)
         {
             //Проверка переменной среды с именем папки
-            if (!ApplicationGlobal.EnvironmentIsReady())
+            if (!AppGlobal.EnvironmentIsReady())
             {
                 if (!TryInitialEnvironment())
                 {
@@ -56,7 +56,7 @@ namespace Graal.QuotesGetter.GUI
             //Проверка полключения к БД
             if (!storageManager.StorageStatus)
             {
-                ApplicationGlobal.WarningMessage("Строка подключения к БД не найдена");
+                AppGlobal.WarningMessage("Строка подключения к БД не найдена");
                 storageManager.ChangeConnectionParameters();
 
                 if (!storageManager.StorageStatus)
@@ -69,7 +69,7 @@ namespace Graal.QuotesGetter.GUI
             //Проверка имени схемы
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GraalSchemaName", EnvironmentVariableTarget.User)))
             {
-                ApplicationGlobal.WarningMessage("Имя схемы Graal не найдено");
+                AppGlobal.WarningMessage("Имя схемы Graal не найдено");
 
                 string schemaName = null;
 
@@ -93,12 +93,12 @@ namespace Graal.QuotesGetter.GUI
                             Close();
                         }
 
-                        Environment.SetEnvironmentVariable(ApplicationGlobal.EnvironmentVariableGraalSchemaName, schemaName, EnvironmentVariableTarget.User);
+                        Environment.SetEnvironmentVariable(AppGlobal.EnvironmentVariableGraalSchemaName, schemaName, EnvironmentVariableTarget.User);
 
                         if (!storageManager.GraalSchemaExistAndCorrect() || MessageBox.Show("Пересоздать схему заново?", "Схема уже существует", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                         {
                             if (TryCreateSchema())
-                                ApplicationGlobal.InfoMessage("Схема Graal успешно создана в хранилище");
+                                AppGlobal.InfoMessage("Схема Graal успешно создана в хранилище");
                             else
                                 Close();
                         }
@@ -117,7 +117,7 @@ namespace Graal.QuotesGetter.GUI
                 MessageBox.Show(new Form() { TopMost = true }, "Схема Graal не найдена в БД либо некорректна и будет создана заново", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 if (TryCreateSchema())
-                    ApplicationGlobal.InfoMessage("Схема Graal успешно создана в хранилище");
+                    AppGlobal.InfoMessage("Схема Graal успешно создана в хранилище");
                 else
                     Close();
             }
@@ -147,9 +147,9 @@ namespace Graal.QuotesGetter.GUI
                     foreach (var path in Enum.GetNames(typeof(GraalTypeFolder)))
                         Directory.CreateDirectory(Path.Combine(ofd.SelectedPath, path));
 
-                    Environment.SetEnvironmentVariable(ApplicationGlobal.EnvironmentVariableGraalDataPathName, ofd.SelectedPath, EnvironmentVariableTarget.User);
+                    Environment.SetEnvironmentVariable(AppGlobal.EnvironmentVariableGraalDataPathName, ofd.SelectedPath, EnvironmentVariableTarget.User);
 
-                    ApplicationGlobal.InfoMessage("Среда успешно инициализирована");
+                    AppGlobal.InfoMessage("Среда успешно инициализирована");
 
                     return true;
                 }
@@ -162,7 +162,7 @@ namespace Graal.QuotesGetter.GUI
         {
             var config = new NLog.Config.LoggingConfiguration();
 
-            if (!ApplicationGlobal.TryGetFullPath(GraalTypeFolder.Logs, Path.Combine("QuotesGetter.GUI", $"{Auxiliary.DateTimeNowFile()}.log"), out string path))
+            if (!AppGlobal.TryGetFullPath(GraalTypeFolder.Logs, Path.Combine("QuotesGetter.GUI", $"{Auxiliary.DateTimeNowFile()}.log"), out string path))
                 throw new InvalidOperationException("Не удалось получить имя файла для логов");
 
             // Targets where to log to: File and Console
@@ -176,10 +176,11 @@ namespace Graal.QuotesGetter.GUI
             // Apply config
             NLog.LogManager.Configuration = config;
 
-            ApplicationGlobal.Logger = NLog.LogManager.GetLogger("QuotesGetter.GUI");
+            AppGlobal.Logger = NLog.LogManager.GetLogger("QuotesGetter.GUI");
         }
 
         #endregion
+
 
     }
 }

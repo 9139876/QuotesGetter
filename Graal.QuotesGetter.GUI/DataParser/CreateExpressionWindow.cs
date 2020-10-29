@@ -40,7 +40,7 @@ namespace Graal.QuotesGetter.GUI.DataParser
 
             ExpressionType type = Description.ValueFromDescription<ExpressionType>(Cmb_ExpressionType.SelectedItem.ToString());
 
-            object[] parameters = Tb_Parameters.Text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parameters = Tb_Parameters.Text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
             try
             {

@@ -35,6 +35,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\LibraryForGraal\External\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\LibraryForGraal\External\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="Npgsql">
       <HintPath>..\LibraryForGraal\External\Npgsql.dll</HintPath>
     </Reference>
@@ -48,10 +52,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Expressions\ApplySeparator.cs" />
-    <Compile Include="Expressions\GetRow.cs" />
+    <Compile Include="ExpressionsSequences\ExpressionsSequenceDate.cs" />
+    <Compile Include="ExpressionsSequences\ExpressionsSequenceDecimal.cs" />
+    <Compile Include="ExpressionsSequences\ExpressionsSequenceType.cs" />
+    <Compile Include="ExpressionsSet.cs" />
+    <Compile Include="Expressions\ConstValue.cs" />
+    <Compile Include="Expressions\GetRowValue.cs" />
     <Compile Include="Expressions\_ExpressionType.cs" />
     <Compile Include="Expressions\_Expression.cs" />
+    <Compile Include="ExpressionsSequences\ExpressionsSequence.cs" />
+    <Compile Include="TestingQuote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -76,5 +86,6 @@
       <Name>Graal.Library.Storage.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,9 +9,9 @@ namespace Graal.QuotesGetter.DataParser.Expressions
 {
     public enum ExpressionType
     {
-        [Description("Применение разделителя")]
-        applySeparator,
-        [Description("Получение столбца")]
-        getRow
+        [Description("Разделение на столбцы и получение значения столбца")]
+        getRowValue,
+        [Description("Константное значение")]
+        constValue
     }
 }
