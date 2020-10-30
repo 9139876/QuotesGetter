@@ -19,18 +19,15 @@ using System.Text.RegularExpressions;
 
 namespace Graal.QuotesGetter.GUI
 {
-    public partial class MainForm : Form
+    public partial class QuotesParserWindow : Form
     {
         StorageManager storageManager;
 
-        public MainForm()
+        public QuotesParserWindow()
         {
             InitializeComponent();
-        }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            new CreateExpressionWindow((Expression ex) => { }).ShowDialog();
+            Lb_Expressions.Items.AddRange(Description.GetAllDescptions<ExpressionType>());
         }
 
         #region Initial
@@ -179,8 +176,12 @@ namespace Graal.QuotesGetter.GUI
             AppGlobal.Logger = NLog.LogManager.GetLogger("QuotesGetter.GUI");
         }
 
+
         #endregion
 
-
+        private void Lb_Expressions_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            new CreateExpressionWindow(Description.ValueFromDescription<ExpressionType>(Lb_Expressions.SelectedItem.ToString()), null).ShowDialog();
+        }
     }
 }

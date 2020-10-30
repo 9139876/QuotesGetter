@@ -9,9 +9,13 @@ namespace Graal.QuotesGetter.DataParser.Expressions
 {
     public enum ExpressionType
     {
-        [Description("Разделение на столбцы и получение значения столбца")]
+        [Description("Получение значения столбца")]
         getRowValue,
         [Description("Константное значение")]
-        constValue
+        constValue,
+        [Description("Получение части строки")]
+        getSubstring,
+        [Description("Замена в строке")]
+        replaceString
     }
 }

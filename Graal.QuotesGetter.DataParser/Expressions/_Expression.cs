@@ -12,6 +12,8 @@ namespace Graal.QuotesGetter.DataParser.Expressions
     {
         public abstract ExpressionType Type { get; }
 
+        public abstract string ParametersHint { get; }
+
         public abstract string Name { get; }
 
         public abstract string Calculate(string inputValue);
@@ -21,6 +23,23 @@ namespace Graal.QuotesGetter.DataParser.Expressions
         abstract protected void Deserialize(JObject serialize);
 
         #region static
+
+        public static string GetExpressionHint(ExpressionType type)
+        {
+            switch (type)
+            {
+                case ExpressionType.getRowValue:
+                    return new GetRowValue().ParametersHint;
+                case ExpressionType.constValue:
+                    return new ConstValue().ParametersHint;
+                case ExpressionType.getSubstring:
+                    return new GetSubstring().ParametersHint;
+                case ExpressionType.replaceString:
+                    return new ReplaceString().ParametersHint;
+                default:
+                    throw new ArgumentException($"Неизвестный тип выражения - '{type}'");
+            }
+        }
 
         public static Expression GetExpression(JObject serialize)
         {
@@ -35,6 +54,12 @@ namespace Graal.QuotesGetter.DataParser.Expressions
                     break;
                 case ExpressionType.constValue:
                     expression = new ConstValue();
+                    break;
+                case ExpressionType.getSubstring:
+                    expression = new GetSubstring();
+                    break;
+                case ExpressionType.replaceString:
+                    expression = new GetSubstring();
                     break;
                 default:
                     throw new ArgumentException($"Неизвестный тип выражения - '{type}'");
@@ -53,6 +78,10 @@ namespace Graal.QuotesGetter.DataParser.Expressions
                     return new GetRowValue(parameters);
                 case ExpressionType.constValue:
                     return new ConstValue(parameters);
+                case ExpressionType.getSubstring:
+                    return new GetSubstring(parameters);
+                case ExpressionType.replaceString:
+                    return new ReplaceString(parameters);
                 default:
                     throw new ArgumentException($"Неизвестный тип выражения - '{type}'");
             }

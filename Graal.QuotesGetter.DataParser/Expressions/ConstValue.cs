@@ -15,10 +15,15 @@ namespace Graal.QuotesGetter.DataParser.Expressions
 
         internal ConstValue(string[] parameters)
         {
+            if (parameters.Length < 1)
+                throw new ArgumentException("Недостаточное число параметров");
+
             value = parameters[0];
         }
 
         public override ExpressionType Type => ExpressionType.constValue;
+
+        public override string ParametersHint => "Значение";
 
         public override string Name => $"Константное значение {value}";
 

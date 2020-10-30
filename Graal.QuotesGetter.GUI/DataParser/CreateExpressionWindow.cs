@@ -14,37 +14,31 @@ namespace Graal.QuotesGetter.GUI.DataParser
 {
     public partial class CreateExpressionWindow : Form
     {
-        Action<Expression> returnExpression;
+        readonly Action<Expression> returnExpression;
 
-        public CreateExpressionWindow(Action<Expression> _returnExpression)
+        readonly ExpressionType expressionType;
+
+        public CreateExpressionWindow(ExpressionType _expressionType, Action<Expression> _returnExpression)
         {
             returnExpression = _returnExpression;
+            expressionType = _expressionType;
 
             InitializeComponent();
 
-            Cmb_ExpressionType.Items.AddRange(Description.GetAllDescptions<ExpressionType>());
-        }
-
-        private void Cmb_ExpressionType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Tb_Parameters.Text = string.Empty;
+            Lbl_Hint.Text = Expression.GetExpressionHint(expressionType);
         }
 
         private void Btn_Create_Click(object sender, EventArgs e)
         {
-            if (Cmb_ExpressionType.SelectedItem == null)
-            {
-                MessageBox.Show("Не выбран тип создаваемого выражения");
-                return;
-            }
-
-            ExpressionType type = Description.ValueFromDescription<ExpressionType>(Cmb_ExpressionType.SelectedItem.ToString());
-
             string[] parameters = Tb_Parameters.Text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
             try
             {
-                returnExpression(Expression.GetExpression(type, parameters));
+                //returnExpression(Expression.GetExpression(expressionType, parameters));
+                var expr = Expression.GetExpression(expressionType, parameters);
+
+                MessageBox.Show($"Выражение {expr.Name} успешно создано");
+
                 Close();
             }
             catch (Exception ex)

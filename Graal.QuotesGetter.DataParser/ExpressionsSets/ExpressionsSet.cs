@@ -1,29 +1,26 @@
 ﻿using Graal.Library.Common;
 using Graal.Library.Common.Quotes;
-using Graal.QuotesGetter.DataParser.Expressions;
-using Graal.QuotesGetter.DataParser.ExpressionsSequences;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Graal.QuotesGetter.DataParser
+namespace Graal.QuotesGetter.DataParser.ExpressionsSets
 {
-    public class ExpressionsSet
+    public class ExpressionsSet : AbstractExpressionsSet<decimal>
     {
-        readonly Dictionary<string, ExpressionsSequence> Set = new Dictionary<string, ExpressionsSequence>()
+        protected override Dictionary<string, ExpressionsSequence<decimal>> Set { get; } = new Dictionary<string, ExpressionsSequence<decimal>>()
         {
-            { "Date", new ExpressionsSequenceDate() },
-            { "Open", new ExpressionsSequenceDecimal() },
-            { "Hi", new ExpressionsSequenceDecimal() },
-            { "Low", new ExpressionsSequenceDecimal() },
-            { "Close", new ExpressionsSequenceDecimal() },
-            { "Volume", new ExpressionsSequenceDecimal() }
+            { "Open", new ExpressionsSequence<decimal>() },
+            { "Hi", new ExpressionsSequence<decimal>() },
+            { "Low", new ExpressionsSequence<decimal>() },
+            { "Close", new ExpressionsSequence<decimal>() },
+            { "Volume", new ExpressionsSequence<decimal>() }
         };
 
         public int RowSkipCount { get; set; } = 0;
+
+        public DateExpressionsSet DateExpressionsSet { get; set; } = new DateExpressionsSet();
 
         public ExpressionsSet() { }
 
@@ -46,10 +43,9 @@ namespace Graal.QuotesGetter.DataParser
                     {
                         try
                         {
-                            if (key == "Date")
-                                tq.Values[key] = Set[key].GetData(row);
-                            else
-                                tq.Values[key] = Set[key].GetDecimal(row);
+                            tq.Values["Date"] = DateExpressionsSet.TryParse(row);
+
+                            tq.Values[key] = Set[key].GetValue(row);
                         }
                         catch (Exception ex)
                         {
@@ -69,22 +65,30 @@ namespace Graal.QuotesGetter.DataParser
             return result;
         }
 
-        public string Serialize()
+        public override string Serialize()
         {
             JObject res = new JObject();
 
             foreach (var key in Set.Keys)
                 res.Add(key, Set[key].Serialize());
 
+            res.Add(nameof(RowSkipCount), RowSkipCount);
+
+            res.Add(nameof(DateExpressionsSet), DateExpressionsSet.Serialize());
+
             return res.ToString();
         }
 
-        void Deserialize(string serailize)
+        protected override void Deserialize(string serailize)
         {
             JObject jobj = JObject.Parse(serailize);
 
             foreach (var key in Set.Keys)
-                Set[key] = ExpressionsSequence.GetExpressionSequence(jobj.SelectToken(key).ToString());
+                Set[key] = new ExpressionsSequence<decimal>((JObject)jobj.SelectToken(key));
+
+            RowSkipCount = int.Parse(jobj.SelectToken(nameof(RowSkipCount)).ToString());
+
+            DateExpressionsSet = new DateExpressionsSet(jobj.SelectToken(nameof(DateExpressionsSet)).ToString());
         }
     }
 }

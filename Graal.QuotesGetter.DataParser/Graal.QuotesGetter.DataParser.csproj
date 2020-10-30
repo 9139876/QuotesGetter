@@ -52,15 +52,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpressionsSequences\ExpressionsSequenceDate.cs" />
-    <Compile Include="ExpressionsSequences\ExpressionsSequenceDecimal.cs" />
-    <Compile Include="ExpressionsSequences\ExpressionsSequenceType.cs" />
-    <Compile Include="ExpressionsSet.cs" />
+    <Compile Include="ExpressionsSets\DateExpressionsSet.cs" />
+    <Compile Include="ExpressionsSets\AbstractExpressionsSet.cs" />
+    <Compile Include="ExpressionsSets\ExpressionsSet.cs" />
     <Compile Include="Expressions\ConstValue.cs" />
+    <Compile Include="Expressions\ReplaceString.cs" />
+    <Compile Include="Expressions\GetSubstring.cs" />
     <Compile Include="Expressions\GetRowValue.cs" />
     <Compile Include="Expressions\_ExpressionType.cs" />
     <Compile Include="Expressions\_Expression.cs" />
-    <Compile Include="ExpressionsSequences\ExpressionsSequence.cs" />
+    <Compile Include="ExpressionsSets\ExpressionsSequence.cs" />
     <Compile Include="TestingQuote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
