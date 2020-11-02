@@ -34,10 +34,11 @@ namespace Graal.QuotesGetter.GUI.DataParser
 
             try
             {
-                //returnExpression(Expression.GetExpression(expressionType, parameters));
                 var expr = Expression.GetExpression(expressionType, parameters);
 
-                MessageBox.Show($"Выражение {expr.Name} успешно создано");
+                //MessageBox.Show($"Выражение '{expr.Name}' успешно создано");
+
+                returnExpression(expr);
 
                 Close();
             }

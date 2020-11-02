@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Graal.QuotesGetter.DataParser.ExpressionsSets
 {
@@ -12,6 +13,13 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
         public AbstractExpressionsSet(string serailize)
         {
             Deserialize(serailize);
+        }
+
+        public string[] GetAllPropertiesNames() => Set.Keys.ToArray();
+
+        public ExpressionsSequence<T> GetSequence(string name)
+        {
+            return Set.ContainsKey(name) ? Set[name] : null;
         }
 
         public abstract string Serialize();

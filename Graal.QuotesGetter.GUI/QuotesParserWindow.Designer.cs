@@ -29,37 +29,35 @@
         private void InitializeComponent()
         {
             this.Lb_Parsers = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.Lb_Expressions = new System.Windows.Forms.ListBox();
+            this.Btn_AddExpressionsSet = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.Tb_QuotesSource = new System.Windows.Forms.TextBox();
+            this.Btn_RenameExpressionsSet = new System.Windows.Forms.Button();
+            this.Btn_CopyExpressionsSet = new System.Windows.Forms.Button();
+            this.Btn_DeleteExpressionsSet = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Lb_Parsers
             // 
+            this.Lb_Parsers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Lb_Parsers.FormattingEnabled = true;
             this.Lb_Parsers.Location = new System.Drawing.Point(15, 25);
             this.Lb_Parsers.Name = "Lb_Parsers";
-            this.Lb_Parsers.Size = new System.Drawing.Size(200, 342);
+            this.Lb_Parsers.Size = new System.Drawing.Size(341, 121);
             this.Lb_Parsers.TabIndex = 0;
+            this.Lb_Parsers.SelectedIndexChanged += new System.EventHandler(this.Lb_Parsers_SelectedIndexChanged);
+            this.Lb_Parsers.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Lb_Parsers_MouseDoubleClick);
             // 
-            // button1
+            // Btn_AddExpressionsSet
             // 
-            this.button1.Location = new System.Drawing.Point(713, 415);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // Lb_Expressions
-            // 
-            this.Lb_Expressions.FormattingEnabled = true;
-            this.Lb_Expressions.Location = new System.Drawing.Point(588, 25);
-            this.Lb_Expressions.Name = "Lb_Expressions";
-            this.Lb_Expressions.Size = new System.Drawing.Size(200, 160);
-            this.Lb_Expressions.TabIndex = 2;
-            this.Lb_Expressions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Lb_Expressions_MouseDoubleClick);
+            this.Btn_AddExpressionsSet.Location = new System.Drawing.Point(15, 152);
+            this.Btn_AddExpressionsSet.Name = "Btn_AddExpressionsSet";
+            this.Btn_AddExpressionsSet.Size = new System.Drawing.Size(75, 23);
+            this.Btn_AddExpressionsSet.TabIndex = 1;
+            this.Btn_AddExpressionsSet.Text = "Добавить";
+            this.Btn_AddExpressionsSet.UseVisualStyleBackColor = true;
+            this.Btn_AddExpressionsSet.Click += new System.EventHandler(this.Btn_AddExpressionsSet_Click);
             // 
             // label1
             // 
@@ -70,24 +68,54 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Парсеры";
             // 
-            // label2
+            // Tb_QuotesSource
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(585, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Выражения";
+            this.Tb_QuotesSource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Tb_QuotesSource.Location = new System.Drawing.Point(478, 25);
+            this.Tb_QuotesSource.Multiline = true;
+            this.Tb_QuotesSource.Name = "Tb_QuotesSource";
+            this.Tb_QuotesSource.ReadOnly = true;
+            this.Tb_QuotesSource.Size = new System.Drawing.Size(540, 121);
+            this.Tb_QuotesSource.TabIndex = 5;
+            // 
+            // Btn_RenameExpressionsSet
+            // 
+            this.Btn_RenameExpressionsSet.Location = new System.Drawing.Point(96, 152);
+            this.Btn_RenameExpressionsSet.Name = "Btn_RenameExpressionsSet";
+            this.Btn_RenameExpressionsSet.Size = new System.Drawing.Size(98, 23);
+            this.Btn_RenameExpressionsSet.TabIndex = 6;
+            this.Btn_RenameExpressionsSet.Text = "Переименовать";
+            this.Btn_RenameExpressionsSet.UseVisualStyleBackColor = true;
+            // 
+            // Btn_CopyExpressionsSet
+            // 
+            this.Btn_CopyExpressionsSet.Location = new System.Drawing.Point(200, 152);
+            this.Btn_CopyExpressionsSet.Name = "Btn_CopyExpressionsSet";
+            this.Btn_CopyExpressionsSet.Size = new System.Drawing.Size(75, 23);
+            this.Btn_CopyExpressionsSet.TabIndex = 7;
+            this.Btn_CopyExpressionsSet.Text = "Копировать";
+            this.Btn_CopyExpressionsSet.UseVisualStyleBackColor = true;
+            // 
+            // Btn_DeleteExpressionsSet
+            // 
+            this.Btn_DeleteExpressionsSet.Location = new System.Drawing.Point(281, 152);
+            this.Btn_DeleteExpressionsSet.Name = "Btn_DeleteExpressionsSet";
+            this.Btn_DeleteExpressionsSet.Size = new System.Drawing.Size(75, 23);
+            this.Btn_DeleteExpressionsSet.TabIndex = 8;
+            this.Btn_DeleteExpressionsSet.Text = "Удалить";
+            this.Btn_DeleteExpressionsSet.UseVisualStyleBackColor = true;
             // 
             // QuotesParserWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label2);
+            this.ClientSize = new System.Drawing.Size(1030, 646);
+            this.Controls.Add(this.Btn_DeleteExpressionsSet);
+            this.Controls.Add(this.Btn_CopyExpressionsSet);
+            this.Controls.Add(this.Btn_RenameExpressionsSet);
+            this.Controls.Add(this.Tb_QuotesSource);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.Lb_Expressions);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.Btn_AddExpressionsSet);
             this.Controls.Add(this.Lb_Parsers);
             this.Name = "QuotesParserWindow";
             this.Text = "Парсер котировок";
@@ -100,10 +128,12 @@
         #endregion
 
         private System.Windows.Forms.ListBox Lb_Parsers;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListBox Lb_Expressions;
+        private System.Windows.Forms.Button Btn_AddExpressionsSet;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox Tb_QuotesSource;
+        private System.Windows.Forms.Button Btn_RenameExpressionsSet;
+        private System.Windows.Forms.Button Btn_CopyExpressionsSet;
+        private System.Windows.Forms.Button Btn_DeleteExpressionsSet;
     }
 }
 

@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace Graal.QuotesGetter.DataParser.ExpressionsSets
 {
-    public class ExpressionsSequence<T> where T : struct
+    public class ExpressionsSequence<T> : IExpressionsSequence where T : struct
     {
         readonly List<Expression> sequence = new List<Expression>();
 
-        public void AddExpression(Expression expression, int position) => sequence.Insert(position, expression);
+        public void AppendExpression(Expression expression) => sequence.Add(expression);
 
         public void RemoveExpression(int position) => sequence.RemoveAt(position);
 
         public void Clear() => sequence.Clear();
 
-        public List<Expression> GetAllExpressions => sequence.ToList();
+        public Expression[] GetAllExpressions() => sequence.ToArray();
 
         public ExpressionsSequence() { }
 

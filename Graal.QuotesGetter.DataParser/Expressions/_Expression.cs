@@ -65,7 +65,7 @@ namespace Graal.QuotesGetter.DataParser.Expressions
                     throw new ArgumentException($"Неизвестный тип выражения - '{type}'");
             }
 
-            expression.Deserialize((JObject)serialize.SelectToken("Specification"));
+            expression.Deserialize((JObject)serialize.SelectToken("serialize"));
 
             return expression;
         }
@@ -91,7 +91,7 @@ namespace Graal.QuotesGetter.DataParser.Expressions
         {
             return new JObject(
                 new JProperty(nameof(Type), (int)expression.Type),
-                new JProperty("Specification", expression.Serialize())
+                new JProperty("serialize", expression.Serialize())
                 ).ToString();
         }
 

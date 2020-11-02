@@ -25,7 +25,7 @@ namespace Graal.QuotesGetter.DataParser.Expressions
 
         public override string ParametersHint => "Значение";
 
-        public override string Name => $"Константное значение {value}";
+        public override string Name => $"Константное значение '{value}'";
 
         public override string Calculate(string inputValue) => value;
 

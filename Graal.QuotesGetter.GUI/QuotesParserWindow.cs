@@ -16,6 +16,7 @@ using NLog;
 using Graal.Library.Common.Enums;
 using Graal.Library.Common.GUI;
 using System.Text.RegularExpressions;
+using Graal.QuotesGetter.DataParser.ExpressionsSets;
 
 namespace Graal.QuotesGetter.GUI
 {
@@ -23,11 +24,30 @@ namespace Graal.QuotesGetter.GUI
     {
         StorageManager storageManager;
 
+        readonly Dictionary<string, ExpressionsSet> parsers;
+
+        string curParserName;
+
+        ExpressionsSet curParser;
+
+        string[] input;
+
+        IExpressionsSequence curExpressionsSequence;
+
         public QuotesParserWindow()
         {
             InitializeComponent();
 
-            Lb_Expressions.Items.AddRange(Description.GetAllDescptions<ExpressionType>());
+            parsers = new Dictionary<string, ExpressionsSet>();
+
+            using (var sr = new StreamReader(@"d:\quotes.csv"))
+                input = sr.ReadToEnd().Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        void RefreshParsers()
+        {
+            Lb_Parsers.Items.Clear();
+            Lb_Parsers.Items.AddRange(parsers.Keys.ToArray());
         }
 
         #region Initial
@@ -118,6 +138,15 @@ namespace Graal.QuotesGetter.GUI
                 else
                     Close();
             }
+
+
+            foreach (DataRow row in storageManager.QuotesParsersTable.GetTable().Rows)
+                parsers.Add(row.Field<string>("name"), new ExpressionsSet(row.Field<string>("serialize")));
+
+            RefreshParsers();
+
+
+
         }
 
         bool TryCreateSchema()
@@ -179,9 +208,47 @@ namespace Graal.QuotesGetter.GUI
 
         #endregion
 
-        private void Lb_Expressions_MouseDoubleClick(object sender, MouseEventArgs e)
+
+
+        private void Lb_Parsers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            new CreateExpressionWindow(Description.ValueFromDescription<ExpressionType>(Lb_Expressions.SelectedItem.ToString()), null).ShowDialog();
+            curParserName = Lb_Parsers.SelectedItem.ToString();
+
+            if (parsers.ContainsKey(curParserName))
+                curParser = parsers[curParserName];
+            else
+                curParser = null;
+        }
+
+        private void Lb_Parsers_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (curParser != null)
+                new ParserEditorWindow(curParser, curParserName, input).ShowDialog();
+        }
+
+        private void Btn_AddExpressionsSet_Click(object sender, EventArgs e)
+        {
+            string name = null;
+
+            var ibw = new InputBoxWindow(true, false, false, string.Empty, "Имя парсера", "Имя парсера") { GetStr = (s) => name = s };
+            if (ibw.ShowDialog() == DialogResult.OK)
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    AppGlobal.ErrorMessage?.Invoke($"Пустое имя парсера");
+                    return;
+                }
+
+                if (!parsers.ContainsKey(name))
+                    parsers.Add(name, new ExpressionsSet());
+                else
+                {
+                    AppGlobal.ErrorMessage?.Invoke($"Парсер с именем '{name}' уже существует");
+                    return;
+                }
+
+                RefreshParsers();
+            }
         }
     }
 }

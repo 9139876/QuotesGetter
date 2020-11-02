@@ -57,6 +57,12 @@
     <Compile Include="DataParser\CreateExpressionWindow.Designer.cs">
       <DependentUpon>CreateExpressionWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataParser\ParserEditorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataParser\ParserEditorWindow.Designer.cs">
+      <DependentUpon>ParserEditorWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="QuotesParserWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +73,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="DataParser\CreateExpressionWindow.resx">
       <DependentUpon>CreateExpressionWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataParser\ParserEditorWindow.resx">
+      <DependentUpon>ParserEditorWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="QuotesParserWindow.resx">
       <DependentUpon>QuotesParserWindow.cs</DependentUpon>

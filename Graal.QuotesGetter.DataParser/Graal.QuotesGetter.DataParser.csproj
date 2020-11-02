@@ -55,6 +55,7 @@
     <Compile Include="ExpressionsSets\DateExpressionsSet.cs" />
     <Compile Include="ExpressionsSets\AbstractExpressionsSet.cs" />
     <Compile Include="ExpressionsSets\ExpressionsSet.cs" />
+    <Compile Include="ExpressionsSets\IExpressionsSequence.cs" />
     <Compile Include="Expressions\ConstValue.cs" />
     <Compile Include="Expressions\ReplaceString.cs" />
     <Compile Include="Expressions\GetSubstring.cs" />
