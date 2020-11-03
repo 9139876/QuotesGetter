@@ -30,9 +30,7 @@ namespace Graal.QuotesGetter.GUI
 
         ExpressionsSet curParser;
 
-        string[] input;
-
-        IExpressionsSequence curExpressionsSequence;
+        readonly string[] input;
 
         public QuotesParserWindow()
         {
@@ -42,12 +40,53 @@ namespace Graal.QuotesGetter.GUI
 
             using (var sr = new StreamReader(@"d:\quotes.csv"))
                 input = sr.ReadToEnd().Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+            SetParsersButtonsVisible();
         }
 
         void RefreshParsers()
         {
             Lb_Parsers.Items.Clear();
             Lb_Parsers.Items.AddRange(parsers.Keys.ToArray());
+        }
+
+        void SetParsersButtonsVisible()
+        {
+            bool visible = curParser != null;
+
+            Btn_CopyExpressionsSet.Visible = visible;
+            Btn_RenameExpressionsSet.Visible = visible;
+        }
+
+        void AddParser(string name, ExpressionsSet parser)
+        {
+            storageManager.AddParser(name, parser.Serialize());
+            parsers.Add(name, parser);
+            RefreshParsers();
+        }
+
+        bool CheckParserName(string name, out string err)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                err = $"Пустое имя парсера";
+                return false;
+            }
+
+            if (name == "empty")
+            {
+                err = $"Имя '{name}' зарезервировано для путого парсера по умолчанию";
+                return false;
+            }
+
+            if (parsers.ContainsKey(name))
+            {
+                err = $"Парсер с именем '{name}' уже существует";
+                return false;
+            }
+
+            err = string.Empty;
+            return true;
         }
 
         #region Initial
@@ -140,8 +179,8 @@ namespace Graal.QuotesGetter.GUI
             }
 
 
-            foreach (DataRow row in storageManager.QuotesParsersTable.GetTable().Rows)
-                parsers.Add(row.Field<string>("name"), new ExpressionsSet(row.Field<string>("serialize")));
+            foreach (var pair in storageManager.GetAllParsers())
+                parsers.Add(pair.Key, new ExpressionsSet(pair.Value));
 
             RefreshParsers();
 
@@ -208,44 +247,73 @@ namespace Graal.QuotesGetter.GUI
 
         #endregion
 
-
-
         private void Lb_Parsers_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (Lb_Parsers.SelectedItem == null)
+                return;
+
             curParserName = Lb_Parsers.SelectedItem.ToString();
 
             if (parsers.ContainsKey(curParserName))
                 curParser = parsers[curParserName];
             else
                 curParser = null;
-        }
 
-        private void Lb_Parsers_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (curParser != null)
-                new ParserEditorWindow(curParser, curParserName, input).ShowDialog();
+            SetParsersButtonsVisible();
         }
 
         private void Btn_AddExpressionsSet_Click(object sender, EventArgs e)
         {
             string name = null;
 
-            var ibw = new InputBoxWindow(true, false, false, string.Empty, "Имя парсера", "Имя парсера") { GetStr = (s) => name = s };
+            var ibw = new InputBoxWindow(true, false, false, string.Empty, "Создание парсера", "Имя парсера") { GetStr = (s) => name = s };
             if (ibw.ShowDialog() == DialogResult.OK)
             {
-                if (string.IsNullOrEmpty(name))
+                if (!CheckParserName(name, out string err))
                 {
-                    AppGlobal.ErrorMessage?.Invoke($"Пустое имя парсера");
+                    AppGlobal.ErrorMessage?.Invoke(err);
                     return;
                 }
 
-                if (!parsers.ContainsKey(name))
-                    parsers.Add(name, new ExpressionsSet());
-                else
+                new ParserEditorWindow(new ExpressionsSet(), name, input, AddParser).ShowDialog();
+            }
+        }
+
+
+        private void Btn_CopyExpressionsSet_Click(object sender, EventArgs e)
+        {
+            string name = null;
+
+            var ibw = new InputBoxWindow(true, false, false, curParserName, "Копирование парсера", "Имя нового парсера") { GetStr = (s) => name = s };
+            if (ibw.ShowDialog() == DialogResult.OK)
+            {
+                if (!CheckParserName(name, out string err))
                 {
-                    AppGlobal.ErrorMessage?.Invoke($"Парсер с именем '{name}' уже существует");
+                    AppGlobal.ErrorMessage?.Invoke(err);
                     return;
                 }
+
+                new ParserEditorWindow((ExpressionsSet)curParser.Clone(), name, input, AddParser).ShowDialog();
+            }
+        }
+
+        private void Btn_RenameExpressionsSet_Click(object sender, EventArgs e)
+        {
+            string name = null;
+
+            var ibw = new InputBoxWindow(true, false, false, curParserName, "Перименование парсера", "Новое имя парсера") { GetStr = (s) => name = s };
+            if (ibw.ShowDialog() == DialogResult.OK)
+            {
+                if (!CheckParserName(name, out string err))
+                {
+                    AppGlobal.ErrorMessage?.Invoke(err);
+                    return;
+                }
+
+                storageManager.RenameParser(curParserName, name);
+
+                parsers.Remove(curParserName);
+                parsers.Add(name, curParser);
 
                 RefreshParsers();
             }

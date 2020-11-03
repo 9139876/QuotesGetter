@@ -59,7 +59,7 @@ namespace Graal.QuotesGetter.DataParser.Expressions
                     expression = new GetSubstring();
                     break;
                 case ExpressionType.replaceString:
-                    expression = new GetSubstring();
+                    expression = new ReplaceString();
                     break;
                 default:
                     throw new ArgumentException($"Неизвестный тип выражения - '{type}'");
@@ -87,12 +87,12 @@ namespace Graal.QuotesGetter.DataParser.Expressions
             }
         }
 
-        public static string SerializeExpression(Expression expression)
+        public static JObject SerializeExpression(Expression expression)
         {
             return new JObject(
                 new JProperty(nameof(Type), (int)expression.Type),
                 new JProperty("serialize", expression.Serialize())
-                ).ToString();
+                );
         }
 
         #endregion

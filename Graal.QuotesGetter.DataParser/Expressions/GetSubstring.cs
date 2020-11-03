@@ -30,9 +30,9 @@ namespace Graal.QuotesGetter.DataParser.Expressions
 
         public override ExpressionType Type => ExpressionType.getSubstring;
 
-        public override string ParametersHint => "Номер первого символа (от 1) и количество символов";
+        public override string ParametersHint => "Номер первого символа (от 1)\r\nи количество символов";
 
-        public override string Name => $"Получение подстроки из {length} символов, начиная с {startIndex + 1}";
+        public override string Name => $"Получение {length} символов, начиная с {startIndex + 1}";
 
         public override string Calculate(string inputValue) => inputValue.Substring(startIndex, length);
 
@@ -47,7 +47,7 @@ namespace Graal.QuotesGetter.DataParser.Expressions
         protected override void Deserialize(JObject serialize)
         {
             startIndex = int.Parse(serialize.SelectToken(nameof(startIndex)).ToString());
-            length = char.Parse(serialize.SelectToken(nameof(length)).ToString());
+            length = int.Parse(serialize.SelectToken(nameof(length)).ToString());
         }
     }
 }

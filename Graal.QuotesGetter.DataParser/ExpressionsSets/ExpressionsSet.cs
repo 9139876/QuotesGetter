@@ -29,40 +29,36 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
             Deserialize(serailize);
         }
 
-        public List<Quote> TryParse(IEnumerable<string> rows)
+        public bool TryParse(string row, out Quote quote, out string error)
         {
-            List<Quote> result = new List<Quote>();
+            quote = null;
+            error = string.Empty;
 
-            try
+            var tq = new TestingQuote();
+
+            if (!DateExpressionsSet.TryParse(row, out DateTime dt, out error))
             {
-                foreach (var row in rows.Skip(RowSkipCount))
+                error = $"Ошибка получения даты: {error}";
+                return false;
+            }
+
+            tq.Values["Date"] = dt;
+
+            foreach (var key in Set.Keys)
+            {
+                try
                 {
-                    var tq = new TestingQuote();
-
-                    foreach (var key in Set.Keys)
-                    {
-                        try
-                        {
-                            tq.Values["Date"] = DateExpressionsSet.TryParse(row);
-
-                            tq.Values[key] = Set[key].GetValue(row);
-                        }
-                        catch (Exception ex)
-                        {
-                            AppGlobal.ErrorMessage($"Ошибка {ex.Message}, строка {row}, выражение для {key}");
-                        }
-                    }
-
-                    result.Add(tq.GetQuote());
+                    tq.Values[key] = Set[key].GetValue(row);
+                }
+                catch (Exception ex)
+                {
+                    error += $"Ошибка {ex.Message}, выражение для {key}";
                 }
             }
-            catch (Exception ex)
-            {
-                AppGlobal.ErrorMessage($"Ошибка {ex.Message}");
-            }
 
+            quote = tq.GetQuote();
 
-            return result;
+            return quote != null;
         }
 
         public override string Serialize()
@@ -83,12 +79,25 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
         {
             JObject jobj = JObject.Parse(serailize);
 
-            foreach (var key in Set.Keys)
+            foreach (var key in Set.Keys.ToList())
                 Set[key] = new ExpressionsSequence<decimal>((JObject)jobj.SelectToken(key));
 
             RowSkipCount = int.Parse(jobj.SelectToken(nameof(RowSkipCount)).ToString());
 
             DateExpressionsSet = new DateExpressionsSet(jobj.SelectToken(nameof(DateExpressionsSet)).ToString());
+        }
+
+        public override AbstractExpressionsSet<decimal> Clone()
+        {
+            var clone = new ExpressionsSet();
+
+            foreach (var key in Set.Keys)
+                clone.Set[key] = (ExpressionsSequence<decimal>)Set[key].Clone();
+
+            clone.RowSkipCount = RowSkipCount;
+            clone.DateExpressionsSet = (DateExpressionsSet)DateExpressionsSet.Clone();
+
+            return clone;
         }
     }
 }

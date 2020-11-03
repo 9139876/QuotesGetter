@@ -22,6 +22,8 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
             return Set.ContainsKey(name) ? Set[name] : null;
         }
 
+        public abstract AbstractExpressionsSet<T> Clone();
+
         public abstract string Serialize();
 
         protected abstract void Deserialize(string serailize);

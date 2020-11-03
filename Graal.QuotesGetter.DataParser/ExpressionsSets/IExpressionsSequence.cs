@@ -11,10 +11,18 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
     {
         void AppendExpression(Expression expression);
 
+        void ExpressionPositionUp(int curPosition);
+
+        void ExpressionPositionDown(int curPosition);
+
         void RemoveExpression(int position);
 
         void Clear();
 
         Expression[] GetAllExpressions();
+
+        string Calculate(string row);
+
+        IExpressionsSequence Clone();
     }
 }

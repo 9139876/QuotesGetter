@@ -42,7 +42,7 @@ namespace Graal.QuotesGetter.DataParser.Expressions
         {
             return new JObject(
                 new JProperty(nameof(index), index),
-                new JProperty(nameof(separator), separator)
+                new JProperty(nameof(separator), separator.ToString())
                 );
         }
 

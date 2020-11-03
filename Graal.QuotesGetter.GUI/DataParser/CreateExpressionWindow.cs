@@ -26,6 +26,9 @@ namespace Graal.QuotesGetter.GUI.DataParser
             InitializeComponent();
 
             Lbl_Hint.Text = Expression.GetExpressionHint(expressionType);
+
+            if (Lbl_Hint.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Length > 1)
+                Lbl_Hint.Location = new Point(Lbl_Hint.Location.X, Lbl_Hint.Location.Y - 15);
         }
 
         private void Btn_Create_Click(object sender, EventArgs e)

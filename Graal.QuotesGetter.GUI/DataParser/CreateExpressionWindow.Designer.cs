@@ -36,7 +36,7 @@
             // 
             // Tb_Parameters
             // 
-            this.Tb_Parameters.Location = new System.Drawing.Point(84, 26);
+            this.Tb_Parameters.Location = new System.Drawing.Point(82, 50);
             this.Tb_Parameters.Name = "Tb_Parameters";
             this.Tb_Parameters.Size = new System.Drawing.Size(220, 20);
             this.Tb_Parameters.TabIndex = 2;
@@ -44,7 +44,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 29);
+            this.label2.Location = new System.Drawing.Point(10, 53);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(66, 13);
             this.label2.TabIndex = 3;
@@ -52,7 +52,7 @@
             // 
             // Btn_Create
             // 
-            this.Btn_Create.Location = new System.Drawing.Point(229, 66);
+            this.Btn_Create.Location = new System.Drawing.Point(227, 76);
             this.Btn_Create.Name = "Btn_Create";
             this.Btn_Create.Size = new System.Drawing.Size(75, 23);
             this.Btn_Create.TabIndex = 4;
@@ -63,7 +63,7 @@
             // Lbl_Hint
             // 
             this.Lbl_Hint.AutoSize = true;
-            this.Lbl_Hint.Location = new System.Drawing.Point(81, 9);
+            this.Lbl_Hint.Location = new System.Drawing.Point(79, 33);
             this.Lbl_Hint.Name = "Lbl_Hint";
             this.Lbl_Hint.Size = new System.Drawing.Size(26, 13);
             this.Lbl_Hint.TabIndex = 5;
@@ -73,11 +73,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(314, 97);
+            this.ClientSize = new System.Drawing.Size(314, 111);
             this.Controls.Add(this.Lbl_Hint);
             this.Controls.Add(this.Btn_Create);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Tb_Parameters);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CreateExpressionWindow";

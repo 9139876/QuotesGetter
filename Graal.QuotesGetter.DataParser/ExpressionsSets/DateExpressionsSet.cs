@@ -1,4 +1,5 @@
 ﻿using Graal.Library.Common;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,11 +26,14 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
             {"Minute", new ExpressionsSequence<int>() }
         };
 
-        public DateTime TryParse(string row)
+        public bool TryParse(string row, out DateTime date, out string error)
         {
+            error = string.Empty;
+            date = DateTime.MinValue;
+
             try
             {
-                return new DateTime(
+                date = new DateTime(
                     Set["Year"].GetValue(row),
                     Set["Month"].GetValue(row),
                     Set["Day"].GetValue(row),
@@ -37,22 +41,42 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
                     Set["Minute"].GetValue(row),
                     0
                     );
+
+                return true;
             }
             catch (Exception ex)
             {
-                AppGlobal.ErrorMessage($"Ошибка {ex.Message}");
-                return DateTime.MinValue;
+                error = ex.Message;
+                return false;
             }
         }
 
         public override string Serialize()
         {
-            throw new NotImplementedException();
+            JObject res = new JObject();
+
+            foreach (var key in Set.Keys)
+                res.Add(key, Set[key].Serialize());
+
+            return res.ToString();
         }
 
         protected override void Deserialize(string serailize)
         {
-            throw new NotImplementedException();
+            JObject jobj = JObject.Parse(serailize);
+
+            foreach (var key in Set.Keys.ToList())
+                Set[key] = new ExpressionsSequence<int>((JObject)jobj.SelectToken(key));
+        }
+
+        public override AbstractExpressionsSet<int> Clone()
+        {
+            var clone = new DateExpressionsSet();
+
+            foreach (var key in Set.Keys)
+                clone.Set[key] = (ExpressionsSequence<int>)Set[key].Clone();
+
+            return clone;
         }
     }
 }

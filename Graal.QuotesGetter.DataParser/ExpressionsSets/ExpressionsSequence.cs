@@ -18,6 +18,26 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
 
         public void RemoveExpression(int position) => sequence.RemoveAt(position);
 
+        public void ExpressionPositionUp(int curPosition)
+        {
+            if (curPosition > 0 && curPosition < sequence.Count)
+            {
+                var buffer = sequence[curPosition];
+                sequence[curPosition] = sequence[curPosition - 1];
+                sequence[curPosition - 1] = buffer;
+            }
+        }
+
+        public void ExpressionPositionDown(int curPosition)
+        {
+            if (sequence.Count > 1 && curPosition < sequence.Count - 1)
+            {
+                var buffer = sequence[curPosition];
+                sequence[curPosition] = sequence[curPosition + 1];
+                sequence[curPosition + 1] = buffer;
+            }
+        }
+
         public void Clear() => sequence.Clear();
 
         public Expression[] GetAllExpressions() => sequence.ToArray();
@@ -26,10 +46,10 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
 
         public ExpressionsSequence(JObject jObj)
         {
-            Deserialize((JObject)jObj.SelectToken(nameof(sequence)));
+            Deserialize(jObj);
         }
 
-        protected string Calculate(string row)
+        public string Calculate(string row)
         {
             foreach (var expr in sequence)
                 row = expr.Calculate(row);
@@ -37,7 +57,7 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
             return row;
         }
 
-        public T GetValue(string row) => (T)Convert.ChangeType(row, typeof(T));
+        public T GetValue(string row) => (T)Convert.ChangeType(Calculate(row), typeof(T));
 
         public JObject Serialize()
         {
@@ -58,6 +78,11 @@ namespace Graal.QuotesGetter.DataParser.ExpressionsSets
                ((JArray)serialize.SelectToken(nameof(sequence)))
                .Select(ex => Expression.GetExpression((JObject)ex))
                );
+        }
+
+        public IExpressionsSequence Clone()
+        {
+            return new ExpressionsSequence<T>(this.Serialize());
         }
     }
 }
