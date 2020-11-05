@@ -1,0 +1,11 @@
+stocks/russia
+stocks/foreign
+currencies/forex
+currencies/moex
+currencies/crypto
+currencies/rouble
+indices/russia
+indices/foreign
+futures/moex
+futures/usa
+commodities

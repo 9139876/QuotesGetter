@@ -7,13 +7,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graal.QuotesGetter.GUI", "G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graal.QuotesGetter.DataParser", "Graal.QuotesGetter.DataParser\Graal.QuotesGetter.DataParser.csproj", "{CDBD3960-985B-42C4-8E4B-AF6FFE9DB01A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{C300AED1-F765-470C-B854-B1D207F22CFB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Library", "_Library", "{C300AED1-F765-470C-B854-B1D207F22CFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graal.Library.Common", "LibraryForGraal\Graal.Library.Common\Graal.Library.Common.csproj", "{75F3A362-0F1E-4809-A876-F23AD62DD8F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graal.Library.Storage.Common", "LibraryForGraal\Graal.Library.Storage.Common\Graal.Library.Storage.Common.csproj", "{74B25759-6B1C-4BB3-8682-5CA922327B80}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graal.Library.Storage.Quotes", "LibraryForGraal\Graal.Library.Storage.Quotes\Graal.Library.Storage.Quotes.csproj", "{7A43A2E7-7C9C-46C5-9A87-46C46E0E495B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Getters", "Getters", "{3E3FFC53-70A4-40E1-95F1-50E058D60BE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graal.QuotesGetter.Common", "Graal.QuotesGetter.Common\Graal.QuotesGetter.Common.csproj", "{5FC79F38-3051-47A5-85CC-E648EEED7F1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graal.QuotesGetter.Finam", "Graal.QuotesGetter.Finam\Graal.QuotesGetter.Finam.csproj", "{23DAE41C-0263-4412-B752-14F59447F3B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6DD38E04-D451-4598-9E78-B90170914EEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graal.QuotesGetter.ManualConsoleTester", "Graal.QuotesGetter.ManualConsoleTester\Graal.QuotesGetter.ManualConsoleTester.csproj", "{7D9A5B66-0ED5-480D-B419-000AA0AF7817}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +51,18 @@ Global
 		{7A43A2E7-7C9C-46C5-9A87-46C46E0E495B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A43A2E7-7C9C-46C5-9A87-46C46E0E495B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A43A2E7-7C9C-46C5-9A87-46C46E0E495B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FC79F38-3051-47A5-85CC-E648EEED7F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FC79F38-3051-47A5-85CC-E648EEED7F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FC79F38-3051-47A5-85CC-E648EEED7F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FC79F38-3051-47A5-85CC-E648EEED7F1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23DAE41C-0263-4412-B752-14F59447F3B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23DAE41C-0263-4412-B752-14F59447F3B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23DAE41C-0263-4412-B752-14F59447F3B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23DAE41C-0263-4412-B752-14F59447F3B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D9A5B66-0ED5-480D-B419-000AA0AF7817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D9A5B66-0ED5-480D-B419-000AA0AF7817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D9A5B66-0ED5-480D-B419-000AA0AF7817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D9A5B66-0ED5-480D-B419-000AA0AF7817}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +71,9 @@ Global
 		{75F3A362-0F1E-4809-A876-F23AD62DD8F2} = {C300AED1-F765-470C-B854-B1D207F22CFB}
 		{74B25759-6B1C-4BB3-8682-5CA922327B80} = {C300AED1-F765-470C-B854-B1D207F22CFB}
 		{7A43A2E7-7C9C-46C5-9A87-46C46E0E495B} = {C300AED1-F765-470C-B854-B1D207F22CFB}
+		{5FC79F38-3051-47A5-85CC-E648EEED7F1F} = {3E3FFC53-70A4-40E1-95F1-50E058D60BE5}
+		{23DAE41C-0263-4412-B752-14F59447F3B6} = {3E3FFC53-70A4-40E1-95F1-50E058D60BE5}
+		{7D9A5B66-0ED5-480D-B419-000AA0AF7817} = {6DD38E04-D451-4598-9E78-B90170914EEA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EDBBC85C-1C3B-4B79-86AA-F3DB3625EC38}
