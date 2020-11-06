@@ -6,58 +6,144 @@ using System.Threading;
 using System.IO;
 using System.Net;
 using System.Security.Policy;
+using Newtonsoft.Json.Linq;
 
 namespace Graal.QuotesGetter.Finam
 {
-    static class MarketsInfoDownloader
+    public static class MarketsInfoDownloader
     {
+        static List<string> GetUrlsTickerInfoPage(string pageData)
+        {
+            string pref = "https://finam.ru";
+            string post = "export";
+
+            pageData = pageData.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(s => s.Contains("data-json"));
+
+            List<string> urls = new List<string>();
+
+            int instrumentIndex, start, end = 0;
+
+            while (true)
+            {
+                instrumentIndex = pageData.IndexOf("instrument", end);
+
+                if (instrumentIndex < 0)
+                    break;
+
+                start = pageData.IndexOf('{', instrumentIndex - 5);
+                end = Index(pageData, start, '{', '}');
+
+                if (end == -1)
+                    break;
+
+                var jobj = JObject.Parse(pageData.Substring(start, end - start).Replace("&quot;", "\""));
+
+                urls.Add(pref + jobj.SelectToken("url").ToString() + post);
+            }
+
+            return urls;
+        }
+
+        static int Index(string s, int start, char open, char close)
+        {
+            if (start == -1)
+                return -1;
+
+            int openCount = 0, closeCount = 0;
+
+            for (int i = start; i < s.Length; i++)
+            {
+                if (s[i] == open)
+                    openCount++;
+                else if (s[i] == close)
+                    closeCount++;
+
+                if (openCount == closeCount)
+                    return i + 1;
+            }
+
+            return -1;
+        }
+
+        static FinamTickerInfo GetTickerInfoFromPage(string pageData)
+        {
+            string data = pageData.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(s => s.Contains("Finam.IssuerProfile.Main.issue = "));
+
+            if (string.IsNullOrEmpty(data))
+                throw new ArgumentException("Не удалось получить данные по тикеру - полученная страница не содержит необходимых данных о тикере");
+
+            data = data.Replace("Finam.IssuerProfile.Main.issue = ", "").Replace(";", "");
+
+            var jobj = JObject.Parse(data);
+
+            var quote = jobj.SelectToken("quote");
+            var market = quote.SelectToken("market");
+            var info = quote.SelectToken("info");
+
+            var finamTI = new FinamTickerInfo()
+            {
+                TickerId = quote.SelectToken("id").ToString(),
+                Code = quote.SelectToken("code").ToString(),
+                Title = quote.SelectToken("title").ToString(),
+                MarketId = market.SelectToken("id").ToString(),
+                MarketTitle = market.SelectToken("title").ToString(),
+                Currency = info.SelectToken("currency").ToString(),
+                VolumeCode = info.SelectToken("volumeCode").ToString(),
+                Url = quote.SelectToken("fullUrl").ToString(),
+            };
+
+            return finamTI;
+        }
+
         /// <summary>
         /// Возвращает список адресов инструментов, по которым можно получить их уникальные коды
         /// </summary>
         /// <param name="markets">Массив названий рынков</param>
         /// <returns></returns>
-        //static List<string> GetTickersFromMarkets()
-        //{
-        //    List<string> result = new List<string>();
-
-        //    foreach (string market in GetActualMarketsList())
-        //    {
-        //        int pageNumber = 1;
-
-        //        while (WebClient.TryGetURLData($"https://www.finam.ru/quotes/{market}/?pageNumber={pageNumber}", out string urlData))
-        //        {
-        //            result.AddRange(ParseCode(urlData));
-
-        //            pageNumber += 1;
-        //            Thread.Sleep(200);
-        //        }
-        //    }
-        //    return result;
-        //}
-
-        /// <summary>
-        /// Формирует адреса инструментов для GetTickersFromMarkets
-        /// </summary>
-        /// <param name="text">Текст страницы</param>
-        /// <param name="targ">Целевая строка</param>
-        /// <param name="pref">Префикс</param>
-        /// <param name="post">Постфикс</param>
-        /// <returns></returns>
-        static List<string> ParseCode(string text, string targ = "/profile/", string pref = "https://finam.ru", string post = "/export")
+        public static List<FinamTickerInfo> GetTickersInfos(string market)
         {
-            List<string> res = new List<string>();
+            List<FinamTickerInfo> result = new List<FinamTickerInfo>();
 
-            int n = text.IndexOf(targ, 0);
+            int pageNumber = 1;
 
-            while (n > 0)
+            while (WebClient.TryGetURLData($"https://www.finam.ru/quotes/{market}/?pageNumber={pageNumber}", out string urlData))
             {
-                res.Add(pref + text.Substring(n, text.IndexOf('"', n) - n) + post);
+                foreach (var url in GetUrlsTickerInfoPage(urlData))
+                {
+                    if (WebClient.TryGetURLData(url, out string tiPage))
+                        result.Add(GetTickerInfoFromPage(tiPage));
+                }
 
-                n = text.IndexOf(targ, n + 1);
+                pageNumber += 1;
+                //Thread.Sleep(200);
             }
 
-            return res.Where(r => !r.Contains("analytics")).ToList();
+            return result;
         }
+
+        ///// <summary>
+        ///// Формирует адреса инструментов для GetTickersFromMarkets
+        ///// </summary>
+        ///// <param name="text">Текст страницы</param>
+        ///// <param name="targ">Целевая строка</param>
+        ///// <param name="pref">Префикс</param>
+        ///// <param name="post">Постфикс</param>
+        ///// <returns></returns>
+        //static List<string> ParseCode(string text, string targ = "/profile/", string pref = "https://finam.ru", string post = "/export")
+        //{
+        //    List<string> res = new List<string>();
+
+        //    int n = text.IndexOf(targ, 0);
+
+        //    while (n > 0)
+        //    {
+        //        res.Add(pref + text.Substring(n, text.IndexOf('"', n) - n) + post);
+
+        //        n = text.IndexOf(targ, n + 1);
+        //    }
+
+        //    return res.Where(r => !r.Contains("analytics")).ToList();
+        //}
 
         /// <summary>
         /// Возвращает данные по тикеру, необходимые для получения котировок
